@@ -2,37 +2,51 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
-const __dirname = path.dirname(__filename); // get the name of the directory
-
-function getFiles(path) {
-  // get array of files inside of directory path
-  return fs
-    .readdirSync(path, { withFileTypes: true })
-    .filter((file) => file.isFile());
+function writeFileJson(obj, path) {
+  fs.writeFileSync(
+    path,
+    JSON.stringify(obj, null, 4 ),
+    (error) => {
+      if (error) throw error;
+    },
+  );
 }
 
-function getDirectories(path) {
-  const directoriesObj = {};
+function getFiles(path, extension) {
+  const result = [];
+  
+  const files = fs.readdirSync(path, { withFileTypes: true });
 
-  // get array of directories base on directory
-  const directories = fs
-    .readdirSync(path, { withFileTypes: true })
-    .filter((directory) => directory.isDirectory());
-
-  for (const directory of directories) {
-    directoriesObj[directory.name] = {};
-
-    const files = getFiles(`${directory.parentPath}/${directory.name}`);
-
-    for (const file of files) {
-      directoriesObj[directory.name][file.name] = {
-        path: `/assets/${directory.name}/${file.name}`,
-      };
+  for (const file of files) {
+    if(file.name.endsWith(extension)) {
+      result.push(file.name);
     }
   }
 
-  return directoriesObj;
+  return result;
 }
 
-console.log(getDirectories(path.join(__dirname, "../assets/alpaca")));
+function getDirectories(path) {
+  const result = {};
+
+  const directories = fs.readdirSync(path, { withFileTypes: true });
+  
+  for (const directory of directories) {
+    if(directory.isDirectory()) {
+      result[directory.name] = getFiles(`${path}/${directory.name}`, ".png");
+    }
+  }
+
+  return result;
+}
+
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
+const basePath = path.join(__dirname, "../../public/assets/");
+
+const imagesPath = `${basePath}/alpaca`;
+const jsonPath = `${basePath}/aplaca-data.json`;
+
+const filesTree = getDirectories(imagesPath);
+
+writeFileJson(filesTree, jsonPath);
