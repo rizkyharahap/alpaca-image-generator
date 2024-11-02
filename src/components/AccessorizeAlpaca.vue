@@ -14,8 +14,6 @@ function renderAccessorizeStyleName(value: string) {
 
   const lastTwoCharacter = name.slice(-2);
 
-  console.log(lastTwoCharacter, Number.isNaN(lastTwoCharacter));
-
   // check if 2 last character is not number, this use from split background name
   if (Number.isNaN(Number(lastTwoCharacter))) return name;
 
@@ -28,8 +26,8 @@ function renderAccessorizeStyleName(value: string) {
 
   <div class="mt-3 flex flex-wrap gap-2">
     <button
-      v-for="(accessorize, key) in alpacaStore.accessorizes"
-      :key="accessorize"
+      v-for="(_, key) in alpacaStore.accessorizes"
+      :key="key"
       class="dark:border-purple-600 dark:bg-purple-800 dark:text-purple-400 dark:hover:bg-purple-700 dark:hover:text-white dark:focus:ring-purple-700 rounded-full border-2 border-purple-500 px-4 py-2 text-sm font-medium capitalize text-purple-500 transition-colors duration-75 hover:bg-purple-200 focus:z-10 focus:outline-none focus:ring-2 focus:ring-purple-100"
       :class="{
         'bg-purple-500 text-white hover:bg-purple-400':
