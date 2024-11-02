@@ -50,14 +50,13 @@ async function downloadImage() {
   const imgUrl = canvas.toDataURL("image/png");
 
   // display and download img
-
   const outputImage = document.createElement("img");
   outputImage.src = imgUrl;
 
   // render on imageGenerated for downloading generated image
   imageGenerated.value?.appendChild(outputImage);
 
-  // Optionally, create a download link
+  // create a download link
   const downloadLink = document.createElement("a");
   downloadLink.href = imgUrl;
   downloadLink.download = "generated-image.png";
@@ -69,28 +68,53 @@ async function downloadImage() {
 </script>
 
 <template>
-  <div class="relative mb-12">
+  <div class="relative mb-6">
     <figure class="relative aspect-square h-full w-full" ref="image-preview">
-      <template v-for="(accessorizes, key) in alpacaStore.alpacas" :key="key">
-        <template
-          v-for="(accessorize, accessorizesIdx) in accessorizes"
-          :key="accessorizesIdx"
-        >
-          <img
-            v-if="alpacaStore.accessorizes[key] === accessorizesIdx"
-            :src="`/assets/alpaca/${key}/${accessorize}`"
-            :alt="accessorize"
-            class="absolute h-full w-full"
-          />
-        </template>
-
-        <img
-          v-if="key === 'leg'"
-          src="/assets/alpaca/nose.png"
-          alt="nose"
-          class="absolute h-full w-full"
-        />
-      </template>
+      <img
+        alt="backgrounds"
+        class="absolute h-full w-full"
+        :src="`/assets/alpaca/backgrounds/${alpacaStore.accessorizes.backgrounds}`"
+      />
+      <img
+        alt="neck"
+        class="absolute h-full w-full"
+        :src="`/assets/alpaca/neck/${alpacaStore.accessorizes.neck}`"
+      />
+      <img
+        alt="leg"
+        class="absolute h-full w-full"
+        :src="`/assets/alpaca/leg/${alpacaStore.accessorizes.leg}`"
+      />
+      <img
+        alt="nose"
+        class="absolute h-full w-full"
+        src="/assets/alpaca/nose.png"
+      />
+      <img
+        alt="mouth"
+        class="absolute h-full w-full"
+        :src="`/assets/alpaca/mouth/${alpacaStore.accessorizes.mouth}`"
+      />
+      <img
+        alt="ears"
+        class="absolute h-full w-full"
+        :src="`/assets/alpaca/ears/${alpacaStore.accessorizes.ears}`"
+      />
+      <img
+        alt="hair"
+        class="absolute h-full w-full"
+        :src="`/assets/alpaca/hair/${alpacaStore.accessorizes.hair}`"
+      />
+      <img
+        alt="accessories"
+        class="absolute h-full w-full"
+        :src="`/assets/alpaca/accessories/${alpacaStore.accessorizes.accessories}`"
+      />
+      <img
+        alt="eyes"
+        class="absolute h-full w-full"
+        :src="`/assets/alpaca/eyes/${alpacaStore.accessorizes.eyes}`"
+      />
     </figure>
 
     <div ref="image-generated" class="hidden"></div>

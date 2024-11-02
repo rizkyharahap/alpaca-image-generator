@@ -2,39 +2,40 @@ import alpacas from "@/datas/aplaca-data.json";
 import { reactive } from "vue";
 
 export type AlpacaAccessorize =
-  | "backgrounds"
-  | "neck"
-  | "leg"
-  | "ears"
-  | "hair"
-  | "eyes"
   | "accessories"
-  | "mouth";
+  | "backgrounds"
+  | "ears"
+  | "eyes"
+  | "hair"
+  | "leg"
+  | "mouth"
+  | "neck";
 export type Alpacas = typeof alpacas;
 
 interface AlpacaStore {
   alpacas: Readonly<typeof alpacas>;
-  accessorizes: { [key in AlpacaAccessorize]: number };
+  accessorizes: { [key in AlpacaAccessorize]: string };
 
   shuffle(): void;
-  changeAccessorize(accessorizeName: AlpacaAccessorize, value: number): void;
+  changeAccessorize(accessorizeName: AlpacaAccessorize, value: string): void;
 }
 
-function shuffleAlpacaAccessorize(part: AlpacaAccessorize) {
-  return Math.floor(Math.random() * alpacas[part].length);
+function shuffleAlpacaAccessorize(part: AlpacaAccessorize): string {
+  const randomIdx = Math.floor(Math.random() * alpacas[part].length);
+  return alpacas[part][randomIdx];
 }
 
 export const alpacaStore = reactive<AlpacaStore>({
   alpacas: alpacas,
   accessorizes: {
+    accessories: shuffleAlpacaAccessorize("accessories"),
     backgrounds: shuffleAlpacaAccessorize("backgrounds"),
-    neck: shuffleAlpacaAccessorize("neck"),
+    ears: shuffleAlpacaAccessorize("ears"),
+    eyes: shuffleAlpacaAccessorize("eyes"),
+    hair: shuffleAlpacaAccessorize("hair"),
     leg: shuffleAlpacaAccessorize("leg"),
     mouth: shuffleAlpacaAccessorize("mouth"),
-    ears: shuffleAlpacaAccessorize("ears"),
-    hair: shuffleAlpacaAccessorize("hair"),
-    eyes: shuffleAlpacaAccessorize("eyes"),
-    accessories: shuffleAlpacaAccessorize("accessories"),
+    neck: shuffleAlpacaAccessorize("neck"),
   },
 
   shuffle() {
